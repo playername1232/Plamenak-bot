@@ -4,10 +4,15 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Antispam_Bot</RootNamespace>
-    <ApplicationIcon>bin\Debug\net6.0\flamingo.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\flamingo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\flamingo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\flamingo.ico" />
     <Content Include="bin\Debug\net6.0\flamingo.ico" />
   </ItemGroup>
 
