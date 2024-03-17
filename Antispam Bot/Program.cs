@@ -50,7 +50,8 @@ namespace Plamenak_Bot
             _commands = new CommandService();
             _service = new ServiceCollection().AddSingleton(_client).AddSingleton(_commands).BuildServiceProvider();
 
-            string token = "";
+            // API Key changed as it was part of previous Github commits. Moved to file
+            string token = File.ReadAllText($@"{Environment.CurrentDirectory}\APIKeys\plamenak_apikey.txt");
 
             _client.Log += Client_Log;
 

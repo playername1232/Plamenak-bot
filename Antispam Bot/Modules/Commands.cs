@@ -679,9 +679,7 @@ namespace Plamenak_Bot.Modules
         {
             if(min > max)
             {
-                int pom = min;
-                min = max;
-                max = pom;
+                (min, max) = (max, min);
             }
 
             Random ran = new Random();
@@ -1209,7 +1207,7 @@ namespace Plamenak_Bot.Modules
                 {
                     await ReplyAsync($"No role with ID {roleID} exists");
                 }
-
+                
                 foreach(SocketUser user in role.Members)
                 {
                     await Console.Out.WriteLineAsync($"Removing {user.Username} from {role.Name}");
@@ -1230,9 +1228,7 @@ namespace Plamenak_Bot.Modules
 
             if(first > last)
             {
-                int pom = last;
-                last = first;
-                first = pom;
+                (last, first) = (first, last);
             }
 
             ulong[] lobbies = JsonSerializer.Deserialize<ulong[]>(File.ReadAllText($@"{Environment.CurrentDirectory}\TFTDataLoadThingie\lobbyRoles.json"));
@@ -1274,9 +1270,7 @@ namespace Plamenak_Bot.Modules
 
             if (first > last)
             {
-                int pom = last;
-                last = first;
-                first = pom;
+                (last, first) = (first, last);
             }
 
             ulong[] lobbies = JsonSerializer.Deserialize<ulong[]>(File.ReadAllText($@"{Environment.CurrentDirectory}\TFTDataLoadThingie\lobbyRoles.json"));
