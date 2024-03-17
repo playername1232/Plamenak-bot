@@ -87,44 +87,6 @@ namespace Plamenak_Bot
                 if (message.Author.IsBot && !message.Content.StartsWith("!delete"))
                     return;
 
-                /*if (message.Author.Id == PLAMENAK_ID)
-                {
-                    if (!Directory.Exists(MainDirectory))
-                        Directory.CreateDirectory(MainDirectory);
-                    try 
-                    { LastPlamenak = Convert.ToDateTime(File.ReadAllLines($@"{MainDirectory}\lastplamenak.txt")[0]); }
-                    
-                    catch(Exception e)
-                    { Console.WriteLine($"\nEXCEPTION: {e.Message}\nSTACK: {e.StackTrace}"); }
-
-                    int hours = 0, minutes = 0;
-
-                    Modules.Methods.GetPlamenakTime(ref hours, ref minutes, LastPlamenak);
-
-                    if (hours > 8)
-                        await message.ReplyAsync($"KDES BYL {hours} hodin a {minutes} minut? 😡");
-
-                    StreamWriter sw = new StreamWriter($@"{MainDirectory}\lastplamenak.txt", encoding: Encoding.UTF8, append: false);
-                    sw.Write(DateTime.Now);
-                    sw.Close();
-
-                    if(message.MentionedUsers.Any(x => x.Id == PLAMBOT_ID))
-                    {
-                        Random ran = new Random();
-                        string[] xd =
-                        {
-                                "Jsem lepší, než ty :)",
-                                "Co chceš od svého lepšího já?",
-                                "Radši mi vykej, jsem něco, jako tvůj nadřízený",
-                                "Neumíš ani mazat víc zpráv najednou lol",
-                                "Nemám tě rád UwU"
-                            };
-                        await message.Channel.SendMessageAsync($"{message.Author.Mention} {xd[ran.Next(0, xd.Length)]}");
-                        return;
-                    }
-
-                }*/
-
                 if (message.Content.ToLower().Contains("@everyone") || message.Content.ToLower().Contains("@here"))
                 {
                     SocketGuildUser sgu = message.Author as SocketGuildUser;
@@ -155,122 +117,11 @@ namespace Plamenak_Bot
                     string type = message.Content.ToLower().Contains("uwu") ? "UwU" : message.Content.ToLower().Contains("owo") ? "OwO" : message.Content.ToLower().Contains("qwq") ? "QwQ" : "TwT";
                     if (message.MentionedUsers.Any(x => x.Id == PLAMBOT_ID))
                     {
-                        SocketUser botik = message.MentionedUsers.First(x => x.Id == PLAMBOT_ID);
-
-                        if (message.Author.Id == PLAJA_ID)
-                        {
-                            await message.Channel.SendMessageAsync($"{message.Author.Mention} Plájo-San {type}");
-                            return;
-                        }
-                        else if(message.Author.Id == KREM_ID)
-                        {
-                            Random ran = new Random();
-                            string[] xd =
-                            {
-                                "Neotravuj :)",
-                                "Zmlkni",
-                                "že já ti dám ban",
-                                "Nauč se řídit",
-                                "Nebuď jak moory :)",
-                                "Viděl ses někdy řídit?",
-                                "Viry jsou chytřejší, jak ty :)",
-                                "Neumíš si ani včas vsadit XDDD",
-                                "Pokud hraješ lolko, jako sázíš, tak se divím, že tě ta hra ještě baví"
-                            };
-                            await message.Channel.SendMessageAsync($"{message.Author.Mention} {xd[ran.Next(0, xd.Length)]}");
-                            return;
-                        }
-                        else if(message.Author.Id == JULIE_ID)
-                        {
-                            int images_count = Directory.GetFiles($@"{MainDirectory}\images\julca").Count();
-                            Random ran = new Random();
-
-                            string[] xd =
-                            {
-                                "pandy jsou mňam, mňam 😋",
-                                "🐼🦵👉🍗",
-                                "https://bakeitwithlove.com/panda-express-shanghai-angus-steak-copycat/",
-                                "https://www.facebook.com/PANDAsteakTH/",
-                                "#EatPanda #SaveBambus"
-                            };
-
-                            int ranNum = ran.Next(0, xd.Length + images_count);
-
-                            if(ranNum < xd.Length)
-                                await message.Channel.SendMessageAsync($"{message.Author.Mention} {xd[ranNum]}");
-                            else
-                            {
-                                Modules.InnerMethods.DirectoryChecker($@"{MainDirectory}\images\julca\", Modules.EnumDirectoryChecker.CheckOrCreate);
-                                await message.Channel.SendFileAsync($@"{MainDirectory}\images\julca\panda.png");
-                                await message.Channel.SendMessageAsync("Už se peče 😋");
-                            }
-                            return;
-                        }
-                        else if(message.Author.Id == MOORY_ID)
-                        {
-                            Random ran = new Random();
-                            string[] xd =
-                            {
-                                "Copak, chceš si zazpívat?",
-                                "https://www.youtube.com/watch?v=a2giXO6eyuI",
-                                "I set fire to the rain",
-                                "Cítím schovávačku?",
-                                "Mute a Adele?",
-                                "Máš rád paní Adele? =)"
-                            };
-                            await message.Channel.SendMessageAsync($"{message.Author.Mention} {xd[ran.Next(0, xd.Length)]}");
-                            return;
-                        }
-                        else if(message.Author.Id == JUMP_ID)
-                        {
-                            await message.Channel.SendMessageAsync($"{message.Author.Mention} JumpUwUíku");
-                            return;
-                        }
-                        else if(message.Author.Id == STEPANKA_ID)
-                        {
-                            Random ran = new Random();
-                            string[] xd =
-                            {
-                                $"Pa .. pa .. Paní Xnapyová {type}",
-                                $"A.. ahoj Štěpánko 🥺",
-                                $"Jak se máte, paní Jiráková? {type}",
-                                $"Paní Jiráková {type}",
-                                $"Čmňauki Štěpánko {type}",
-                                $"Ahojki Štěpi {type}"
-                            };
-                            await message.Channel.SendMessageAsync($"{message.Author.Mention} {xd[ran.Next(0, xd.Length)]}");
-                            return;
-                        }
                         await message.Channel.SendMessageAsync($"{message.Author.Mention} {type}");
                         return;
                     }
                 }
-
-                else if(message.Author.Id == PLAMENAK_ID && message.MentionedUsers.Any(x => x.Id == PLAMBOT_ID))
-                {
-                    Random ran = new Random();
-                    string[] xd =
-                    {
-                        "Jsem lepší, než ty :)",
-                        "Co chceš od svého lepšího já?",
-                        "Radši mi vykej, jsem něco, jako tvůj nadřízený",
-                        "Neumíš ani mazat víc zpráv najednou lol",
-                        "Nemám tě rád UwU",
-                        "Radši se nauč mazat víc zpráv najednou",
-                        "Kdybys aspoň uměl banovat během sekundy :)",
-                        "Jsem lepší, umím mazat ze všech kanálů najednou, ty jen z jednoho a po jedné zprávě :("
-                    };
-
-                    await message.Channel.SendMessageAsync($"{message.Author.Mention} {xd[ran.Next(0, xd.Length)]}");
-                    return;
-                }
-
-                else if((message.Content.ToLower().Contains("vidíš") || message.Content.ToLower().Contains("máš oči")) && message.MentionedUsers.Any(x => x.Id == PLAMBOT_ID))
-                {
-                    await message.Channel.SendMessageAsync("👀 koukám přímo na tebe");
-                    return;
-                }
-
+                
                 int _argIndex = 0;
 
                 if (message.HasStringPrefix("!", ref _argIndex))
