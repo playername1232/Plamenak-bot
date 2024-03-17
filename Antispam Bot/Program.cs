@@ -74,50 +74,15 @@ namespace Plamenak_Bot
         public async Task RegisterCommandsAsync()
         {
             _client.MessageReceived += HandleCommandAsync;
-            _client.UserUpdated += Client_GuildMemberUpdated;
-            _client.GuildScheduledEventCreated += Client_GuildScheduledEventCreated;
             await _commands.AddModulesAsync(Assembly.GetEntryAssembly(), _service);
         }
-
-        private async Task Client_GuildScheduledEventCreated(SocketGuildEvent arg)
-        {
-            //Placeholder
-        }
-
-        public async Task Client_GuildMemberUpdated(SocketUser before, SocketUser after)
-        {
-            //MFG role ID = 1166365362158313525ul
-
-            await Console.Out.WriteLineAsync($"before: {before.Username}\n" +
-                $"after: {after.Username}");
-
-            /*if (after.Roles.Any(x => x.Id == 1166365362158313525ul) && !(before.Roles.Any(x => x.Id == 1166365362158313525ul)))
-            {
-                if (!after.Nickname.StartsWith("[MFG]"))
-                {
-                    string newNickname = "[MFG] " + after.Username;
-                    await after.ModifyAsync(x => x.Nickname = newNickname);
-                }
-            }
-            else if(!(after.Roles.Any(x => x.Id == 1166365362158313525ul)) && before.Roles.Any(x => x.Id == 1166365362158313525ul))
-            {
-                if(after.Nickname.StartsWith("[MFG]"))
-                {
-                    string newNickname = after.Username.Split("[MFG]")[1];
-                    await after.ModifyAsync(x => x.Nickname = newNickname);
-                }
-            }*/
-        }
-
+        
         private async Task HandleCommandAsync(SocketMessage msg)
         {
             try
             {
                 SocketUserMessage message = msg as SocketUserMessage;
                 SocketCommandContext context = new SocketCommandContext(_client, message);
-
-                Console.WriteLine($"Message: {message.Content}\nMessage Clean content: {message.CleanContent}");
-                
 
                 if (message.Author.IsBot && !message.Content.StartsWith("!delete"))
                     return;
@@ -171,8 +136,8 @@ namespace Plamenak_Bot
                         string filename = $"deleted{DateTime.Now.Day}{DateTime.Now.Month}{DateTime.Now.Year}.txt";
 
                         StreamWriter sw = new StreamWriter($@"{MessageDeleteDirectory}\{filename}", append: true, encoding: Encoding.UTF8);
-                        sw.WriteLine($"{DateTime.Now.ToString("G")}\nServer: {context.Guild.ToString()}\n{message.Author.ToString()} - {message.Author.Id}\n{message.Content}\nIn {message.Channel}\nMessage id {message.Id}" +
-                            $"\n---------------------------------------------------------------------");
+                        await sw.WriteLineAsync($"{DateTime.Now:G}\nServer: {context.Guild.ToString()}\n{message.Author.ToString()} - {message.Author.Id}\n{message.Content}\nIn {message.Channel}\nMessage id {message.Id}" +
+                                                $"\n---------------------------------------------------------------------");
 
                         sw.Close();
 

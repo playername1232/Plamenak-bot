@@ -60,14 +60,14 @@ namespace Plamenak_Bot.Modules
             ulong[] numbers = { 78484, 61511, 1, 5445, 15, 1, 51, 515, 5456 };
 
             string serialized = JsonSerializer.Serialize(numbers);
-            File.WriteAllText($@"{Environment.CurrentDirectory}\SerializationTest.json", serialized);
+            await File.WriteAllTextAsync($@"{Environment.CurrentDirectory}\SerializationTest.json", serialized);
         }
 
         [Command("currentguild")]
         public async Task CurrentGuild() => await Context.Message.ReplyAsync($"{Context.Guild.ToString()}");
 
         [Command("whereami")]
-        public async Task WhereAmI() => System.Console.WriteLine($"{Environment.CurrentDirectory}");
+        public void WhereAmI() => Console.WriteLine($"{Environment.CurrentDirectory}");
 
         [Command("myid")]
         public async Task MyID()
@@ -79,12 +79,10 @@ namespace Plamenak_Bot.Modules
         public async Task GetFileRootDirectory(params string[] _) => await Context.Message.ReplyAsync($"Root file directory = \"{Program.MainDirectory}\"");
 
         //mm/dd/yyyy
+        [Obsolete("This command is obsolete", true)]
         [Command("lastplamenak")]
         public async Task LastPlamenak(string date, string time)
         {
-            Console.WriteLine("Temporary disabled");
-            return;
-
             if (Context.Message.Author.Id != Program.PLAJA_ID)
                 return;
 
@@ -117,18 +115,16 @@ namespace Plamenak_Bot.Modules
             }
         }
 
+        [Obsolete("This command is obsolete", true)]
         [Command("getlastplamenak")]
         public async Task GetLastPlamenak()
         {
-            Console.WriteLine("Temporary disabled");
-            return;
-
             if (!Directory.Exists(Program.MainDirectory))
                 Directory.CreateDirectory(Program.MainDirectory);
             DateTime LastPlamenak = DateTime.Now;
 
             try
-            { LastPlamenak = Convert.ToDateTime(File.ReadAllLines($@"{Program.MainDirectory}\lastplamenak.txt")[0]); }
+            { LastPlamenak = Convert.ToDateTime((await File.ReadAllLinesAsync($@"{Program.MainDirectory}\lastplamenak.txt"))[0]); }
 
             catch (Exception e)
             { Console.WriteLine($"\nEXCEPTION: {e.Message}\nSTACK: {e.StackTrace}"); }
@@ -141,7 +137,7 @@ namespace Plamenak_Bot.Modules
         }
 
         [Command("copy")]
-        public async Task CopyMessage(string message) => Console.WriteLine($"Copied message: {message}");
+        public void CopyMessage(string message) => Console.WriteLine($"Copied message: {message}");
 
         [Command("choose")]
         public async Task ChooseOption(params string[] options)
@@ -842,8 +838,6 @@ namespace Plamenak_Bot.Modules
             }
 
             string reasonOut = reason is null ? "Důvod nebyl zadán" : reason;
-
-            char colmn = '"';
 
             await (user as IGuildUser).KickAsync(reason);
 
