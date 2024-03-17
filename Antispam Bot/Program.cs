@@ -50,7 +50,7 @@ namespace Plamenak_Bot
             _commands = new CommandService();
             _service = new ServiceCollection().AddSingleton(_client).AddSingleton(_commands).BuildServiceProvider();
 
-            string token = "ODkzNzk5MDMzMTU0NDQ1MzQy.YVgtNw.JEU6rJ9ha-tUUsJnEjLb_MJQZiA";
+            string token = "";
 
             _client.Log += Client_Log;
 
