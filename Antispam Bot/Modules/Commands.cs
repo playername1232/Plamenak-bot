@@ -1231,30 +1231,24 @@ namespace Plamenak_Bot.Modules
                 (last, first) = (first, last);
             }
 
-            ulong[] lobbies = JsonSerializer.Deserialize<ulong[]>(File.ReadAllText($@"{Environment.CurrentDirectory}\TFTDataLoadThingie\lobbyRoles.json"));
+            List<int> range = Enumerable.Range(first, (last - first) + 1).ToList();
 
-            Dictionary<SocketRole, string> roles = new Dictionary<SocketRole, string>();
-            lobbies.ToList().ForEach(x =>
+            List<SocketGuildChannel> channels = Context.Guild.Channels.Where(x => x.Name.Contains("lobby")).ToList();
+            
+            foreach (int lNum in range)
             {
-                SocketRole role = Context.Guild.GetRole(x);
-                roles.Add(role, role.Name);
-            });
+                SocketGuildChannel channel = channels.FirstOrDefault(x => 
+                    x.Name.ToLower().StartsWith("lobby") && (x.Name.ToLower().Split("lobby")[1] == lNum.ToString()));
 
-            Dictionary<string, ulong> channels = new Dictionary<string, ulong>();
-
-            Context.Guild.Channels.ToList().ForEach(x =>
-            {
-                if (x.Name.ToLower().StartsWith("lobby") && roles.Any(y => y.Key.Name.ToLower() == x.Name.ToLower()) && !channels.Any(y => y.Key.ToLower() == x.Name.ToLower()))
+                if (channel != null)
                 {
                     //Console.WriteLine($"Adding lobby: {x.Name} with id: {x.Id}");
                     channels.Add(x.Name, x.Id);
+                    await (channel as ISocketMessageChannel).SendMessageAsync(message);
+                    continue;
                 }
-            });
 
-            for (int i = first -1; i < last; i++)
-            {
-                SocketGuildChannel channel = Context.Guild.GetChannel(channels.First(x => x.Key == roles.First(y => y.Key.Id == lobbies[i]).Key.Name).Value);
-                await (channel as ITextChannel).SendMessageAsync(message);
+                Console.WriteLine($"Channel with number {lNum} is null!");
             }
 
             await ReplyAsync("Sending done!");
