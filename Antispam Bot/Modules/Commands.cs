@@ -2,25 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
-using Discord.Rest;
 using Discord.WebSocket;
-using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Globalization;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using Antispam_Bot.Modules;
-using System.Runtime.CompilerServices;
-using System.Xml.Schema;
-using System.Security.Cryptography;
 using System.Data;
-using System.Threading.Channels;
 
 namespace Plamenak_Bot.Modules
 {
@@ -1243,7 +1233,7 @@ namespace Plamenak_Bot.Modules
                 if (channel != null)
                 {
                     //Console.WriteLine($"Adding lobby: {x.Name} with id: {x.Id}");
-                    channels.Add(x.Name, x.Id);
+                    channels.Add(channel);
                     await (channel as ISocketMessageChannel).SendMessageAsync(message);
                     continue;
                 }
