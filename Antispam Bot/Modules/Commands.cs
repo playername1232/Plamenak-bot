@@ -48,10 +48,12 @@ namespace Plamenak_Bot.Modules
              return default;
         }
 
-        [Command("pmme")]
-        public async Task PMMe()
+        [RequireUserPermission(GuildPermission.Administrator)]
+        [Command("killswitch")]
+        public async Task KillSwitch()
         {
-            await Context.Message.Author.SendMessageAsync("Sending requested PM =)");
+            await Context.Message.ReplyAsync("Vypínám se o7");
+            Environment.Exit(0);
         }
 
         [Command("serializeInt64")]
@@ -151,7 +153,44 @@ namespace Plamenak_Bot.Modules
             await Context.Message.ReplyAsync($"{options[ran.Next(0, options.Length)]}");
         }
 
+        [RequireUserPermission(GuildPermission.Administrator, ErrorMessage = "User is not Administrator!")]
+
         [RequireUserPermission(GuildPermission.Administrator, ErrorMessage = "User is not administrator!")]
+        [Command("createchannels")]
+        public async Task CreateChannels(ulong categoryID, string channelPrefix, int start, int end)
+        {
+            if (start > end)
+                (start, end) = (end, start);
+
+            SocketCategoryChannel category = Context.Guild.GetCategoryChannel(categoryID);
+            if(category == null)
+            {
+                await ReplyAsync($"Kategorie s ID {categoryID} Neexistuje!");
+                return;
+            }
+
+            for(int i = start; i <= end; i++)
+            {
+                Debug.WriteLine($"Creating channel {channelPrefix}{i} in category = {categoryID}");
+                await Context.Guild.CreateTextChannelAsync($"{channelPrefix}{i}", x => x.CategoryId = categoryID);
+            }
+        }
+        [RequireUserPermission(GuildPermission.Administrator, ErrorMessage = "User is not administrator!")]
+        [Command("deletechannels")]
+        public async Task DeleteChannels(ulong categoryID)
+        {
+            SocketCategoryChannel category = Context.Guild.GetCategoryChannel(categoryID);
+            if (category == null)
+            {
+                await ReplyAsync($"Kategorie s ID {categoryID} Neexistuje!");
+                return;
+            }
+
+            List<SocketGuildChannel> channels = category.Channels.ToList();
+
+            channels.ForEach(async channel => await channel.DeleteAsync());
+        }
+
         [Command("addrole")]
         public async Task AddRole(SocketRole roleSocket, params SocketUser[] users)
         {

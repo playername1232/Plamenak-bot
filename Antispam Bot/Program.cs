@@ -50,7 +50,7 @@ namespace Plamenak_Bot
             _commands = new CommandService();
             _service = new ServiceCollection().AddSingleton(_client).AddSingleton(_commands).BuildServiceProvider();
 
-            string token = "ODkzNzk5MDMzMTU0NDQ1MzQy.YVgtNw.JEU6rJ9ha-tUUsJnEjLb_MJQZiA";
+            string token = File.ReadAllText($@"{Environment.CurrentDirectory}\APIKey\api_key.txt");
 
             _client.Log += Client_Log;
 
@@ -116,7 +116,7 @@ namespace Plamenak_Bot
                 SocketUserMessage message = msg as SocketUserMessage;
                 SocketCommandContext context = new SocketCommandContext(_client, message);
 
-                Console.WriteLine($"Message: {message.Content}\nMessage Clean content: {message.CleanContent}");
+                //Console.WriteLine($"Message: {message.Content}\nMessage Clean content: {message.CleanContent}");
                 
 
                 if (message.Author.IsBot && !message.Content.StartsWith("!delete"))
