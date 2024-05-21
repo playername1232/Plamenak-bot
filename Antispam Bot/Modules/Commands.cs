@@ -154,7 +154,18 @@ namespace Plamenak_Bot.Modules
         }
 
         [RequireUserPermission(GuildPermission.Administrator, ErrorMessage = "User is not Administrator!")]
+        [Command("SendMessagesToChannelsInCategory")]
+        public async Task SendMessagesToChannelsInCategory(ulong categoryID, string message)
+        {
+            SocketCategoryChannel category = Context.Guild.GetCategoryChannel(categoryID);
+            if (category == null)
+            {
+                await ReplyAsync($"Kategorie s ID {categoryID} Neexistuje!");
+                return;
+            }
 
+            category.Channels.ToList().ForEach(x => (x as IMessageChannel).SendMessageAsync(message));
+        }
         [RequireUserPermission(GuildPermission.Administrator, ErrorMessage = "User is not administrator!")]
         [Command("createchannels")]
         public async Task CreateChannels(ulong categoryID, string channelPrefix, int start, int end)
