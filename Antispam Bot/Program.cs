@@ -316,10 +316,6 @@ namespace Plamenak_Bot
                     if (!result.IsSuccess)
                         Console.WriteLine($"Chyba!\nException: {result.ErrorReason}");
 
-
-                    if (message.Content.ToLower().StartsWith("!delete") && result.IsSuccess)
-                        await message.DeleteAsync();
-
                     return;
                 }
             }

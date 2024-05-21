@@ -256,7 +256,7 @@ namespace Plamenak_Bot.Modules
             foreach(ulong uID in users)
             {
                 try
-                {
+                {   
                     SocketUser user = Context.Guild.GetUser(uID);
 
                     await (user as IGuildUser).AddRoleAsync(roleSocket);
@@ -867,6 +867,8 @@ namespace Plamenak_Bot.Modules
                     }
                 }
             }
+
+            await Context.Message.DeleteAsync();
         }
 
         [Command("kick")]
